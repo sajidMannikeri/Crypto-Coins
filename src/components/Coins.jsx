@@ -23,6 +23,7 @@ const Coins = () => {
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [currency, setCurrency] = useState("usd");
+  const [searchTerm , setSearchTerm] = useState("");
 
   const currencySymbol =
     currency === "inr" ? "₹" : currency === "eur" ? "€" : "$";
@@ -49,7 +50,6 @@ const Coins = () => {
     fetchCoins();
   }, [currency, page]);
 
-
   if (error) return <Error message="Error fetching the coins" />;
 
   return (
@@ -66,12 +66,20 @@ const Coins = () => {
                 <Radio value={"eur"}>€ EUR</Radio>
               </HStack>
             </RadioGroup>
+
+            <FormControl justifyContent={"center"} w={["" , "25%"]}>
+              <Input type="text" placeholder="Search any coin..." onChange={e => (setSearchTerm(e.target.value))}/>
+            </FormControl>
           </HStack>
 
-          
-
           <HStack wrap={"wrap"} justifyContent={"space-evenly"}>
-            {coins.map((item) => (
+            {coins.filter( (value) => {
+              if( searchTerm === ""){
+                return value
+              } else if (value.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                return value
+              }
+            }).map((item) => (
               <CoinCard
                 id={item.id}
                 key={item.id}
