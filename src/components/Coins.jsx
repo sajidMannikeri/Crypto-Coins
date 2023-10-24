@@ -2,7 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "./Loader";
 import { server } from "../main";
-import { Button, Container, HStack, Radio, RadioGroup } from "@chakra-ui/react";
+import {
+  Button,
+  Container,
+  HStack,
+  Radio,
+  RadioGroup,
+  FormControl,
+  Input,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
 import Error from "./Error";
 import CoinCard from "./CoinCard";
 import { Link } from "react-router-dom";
@@ -39,6 +49,7 @@ const Coins = () => {
     fetchCoins();
   }, [currency, page]);
 
+
   if (error) return <Error message="Error fetching the coins" />;
 
   return (
@@ -47,13 +58,17 @@ const Coins = () => {
         <Loader />
       ) : (
         <>
-          <RadioGroup value={currency} onChange={setCurrency} p={"8"}>
-            <HStack spacing={"4"}>
-              <Radio value={"inr"}>₹ INR</Radio>
-              <Radio value={"usd"}>$ USD</Radio>
-              <Radio value={"eur"}>€ EUR</Radio>
-            </HStack>
-          </RadioGroup>
+          <HStack justifyContent={"space-evenly"} wrap={"wrap"}>
+            <RadioGroup value={currency} onChange={setCurrency} p={"8"}>
+              <HStack spacing={"4"}>
+                <Radio value={"inr"}>₹ INR</Radio>
+                <Radio value={"usd"}>$ USD</Radio>
+                <Radio value={"eur"}>€ EUR</Radio>
+              </HStack>
+            </RadioGroup>
+          </HStack>
+
+          
 
           <HStack wrap={"wrap"} justifyContent={"space-evenly"}>
             {coins.map((item) => (
@@ -72,7 +87,7 @@ const Coins = () => {
           <HStack w={"full"} overflowX={"auto"} p={"8"}>
             {btns.map((item, index) => (
               <Button
-              key={index}
+                key={index}
                 bgColor={"blackAlpha.900"}
                 color={"white"}
                 onClick={() => changePage(index + 1)}
